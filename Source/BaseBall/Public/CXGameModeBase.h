@@ -40,6 +40,8 @@ public:
 
 	UFUNCTION()
 	void AdvanceTurn();
+
+	bool bIsGameEnded;
 	FTimerHandle ResetTimerHandle;
 	FTimerHandle MainTimerHandle;
 	int32 CurrentGuessPlayerIndex = 0;

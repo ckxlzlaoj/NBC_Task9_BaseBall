@@ -181,7 +181,7 @@ void ACXGameModeBase::ResetGame()
 
 void ACXGameModeBase::JudgeGame(ACXPlayerController* InChattingPlayerController, int InStrikeCount)
 {
-	bool bIsGameEnded = false;
+	bIsGameEnded = false;
 	if (3 == InStrikeCount)
 	{
 		bIsGameEnded = true;
@@ -215,6 +215,7 @@ void ACXGameModeBase::JudgeGame(ACXPlayerController* InChattingPlayerController,
 				if (CXPS->CurrentGuessCount < CXPS->MaxGuessCount)
 				{
 					bIsDraw = false;
+					bIsGameEnded = false;
 					break;
 				}
 			}
@@ -237,9 +238,11 @@ void ACXGameModeBase::JudgeGame(ACXPlayerController* InChattingPlayerController,
 			}
 		}
 	}
-	if (!bIsGameEnded)
+	if (!bIsGameEnded&& 3 == InStrikeCount)
 	{
-		AdvanceTurn(); //// 추가된 부분 ////
+		
+			
+		
 	}
 }
 
@@ -351,10 +354,16 @@ void ACXGameModeBase::PrintChatMessageString(ACXPlayerController* InChattingPlay
 				FString CombinedMessageString = InChatMessageString + TEXT(" -> ") + JudgeResultString;
 				CXPlayerController->ClientRPCPrintChatMessageString(CombinedMessageString);
 
-				int32 StrikeCount = FCString::Atoi(*JudgeResultString.Left(1));
-				JudgeGame(InChattingPlayerController, StrikeCount);
+				
 				
 			}
+		}
+		int32 StrikeCount = FCString::Atoi(*JudgeResultString.Left(1));
+		JudgeGame(InChattingPlayerController, StrikeCount);
+		if (!bIsGameEnded)
+		{
+
+			AdvanceTurn();
 		}
 		
 	}
